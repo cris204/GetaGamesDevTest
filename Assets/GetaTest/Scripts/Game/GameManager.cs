@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
     {
         StorageManager.Instance.SetInt(Env.RACING_TIMES_KEY, racingPlayed);
         StorageManager.Instance.SetInt(Env.WIN_TIMES_KEY, racingWins);
-        StorageManager.Instance.SetFloat(Env.BEST_LAP_TIME_KEY, bestLap);
+        StorageManager.Instance.SetFloat(Env.BEST_LAP_TIME_KEY, currentLapTime);
     }
 
     private void LoadInformation()
