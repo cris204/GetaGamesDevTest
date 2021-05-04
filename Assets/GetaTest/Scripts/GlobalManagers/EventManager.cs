@@ -28,7 +28,6 @@ public class EventManager : Singleton<EventManager>
 {
     public bool LimitQueueProcesing = false;
     public float QueueProcessTime = 0.0f;
-    private static EventManager s_Instance = null;
     private Queue m_eventQueue = new Queue();
 
     public delegate void EventDelegate<T>(T e) where T : GameEvent;
@@ -164,6 +163,5 @@ public class EventManager : Singleton<EventManager>
     {
         RemoveAll();
         m_eventQueue.Clear();
-        s_Instance = null;
     }
 }
