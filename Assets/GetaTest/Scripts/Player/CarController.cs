@@ -126,6 +126,13 @@ public class CarController : MonoBehaviour
     public WheelCollider RearLeftWheel;
     public WheelCollider RearRightWheel;
 
+    [Header("Transform Wheels")]
+    [Tooltip("The physical representations of the Kart's wheels.")]
+    public Transform FrontLeftTransform;
+    public Transform FrontRightTransform;
+    public Transform RearLeftTransform;
+    public Transform RearRightTransform;
+
     [Tooltip("Which layers the wheels will detect.")]
     public LayerMask GroundLayers = Physics.DefaultRaycastLayers;
 
@@ -198,6 +205,7 @@ public class CarController : MonoBehaviour
             return;
         }
 
+
         UpdateSuspensionParams(FrontLeftWheel);
         UpdateSuspensionParams(FrontRightWheel);
         UpdateSuspensionParams(RearLeftWheel);
@@ -230,6 +238,8 @@ public class CarController : MonoBehaviour
         GroundAirbourne();
 
         m_PreviousGroundPercent = GroundPercent;
+
+
 
     }
 
@@ -335,6 +345,11 @@ public class CarController : MonoBehaviour
 
         // apply inputs to forward/backward
         float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
+        float steerAngle = turningPower * 5;
+
+
+        FrontLeftWheel.steerAngle = steerAngle;
+        FrontRightWheel.steerAngle = steerAngle;
 
         Quaternion turnAngle = Quaternion.AngleAxis(turningPower, transform.up);
         Vector3 fwd = turnAngle * transform.forward;
@@ -466,6 +481,13 @@ public class CarController : MonoBehaviour
             m_LastValidRotation.eulerAngles = new Vector3(0.0f, transform.rotation.y, 0.0f);
         }
 
+
+
+        UpdateWheelPose(FrontLeftWheel, FrontLeftTransform);
+        UpdateWheelPose(FrontRightWheel, FrontRightTransform);
+        UpdateWheelPose(RearLeftWheel, RearLeftTransform);
+        UpdateWheelPose(RearRightWheel, RearRightTransform);
+
     }
     public void OnTriggerEnter(Collider other)
     {
@@ -496,6 +518,16 @@ public class CarController : MonoBehaviour
             MoveVehicle(true, false, random * 50);
 
         }
+    }
+    private void UpdateWheelPose(WheelCollider wheel, Transform transform)
+    {
+        Vector3 _pos = transform.position;
+        Quaternion _quat = transform.rotation;
+
+        wheel.GetWorldPose(out _pos, out _quat);
+
+      //  _transform.position = _pos;
+        transform.rotation = _quat;
 
     }
 }
