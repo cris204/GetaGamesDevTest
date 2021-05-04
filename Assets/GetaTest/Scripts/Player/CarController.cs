@@ -21,7 +21,7 @@ public class CarController : MonoBehaviour
 	public Transform rearRightTransform;
 
 	public float steerAngle = 40;
-	public float motorForce = 50;
+	public float motorForce = 200;
 
 	private void FixedUpdate()
 	{
@@ -46,8 +46,8 @@ public class CarController : MonoBehaviour
 
 	private void Accelerate()
 	{
-		rearLeftWheel.motorTorque = verticalInput * motorForce;
-		rearRightWheel.motorTorque = verticalInput * motorForce;
+		rearLeftWheel.motorTorque = verticalInput * motorForce * Time.fixedDeltaTime;
+		rearRightWheel.motorTorque = verticalInput * motorForce * Time.fixedDeltaTime;
 	}
 
 	private void UpdateWheelPoses()

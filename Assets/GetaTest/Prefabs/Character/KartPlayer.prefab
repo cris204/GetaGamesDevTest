@@ -423,16 +423,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d61263999d901d45b690833941f3f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontDriverW: {fileID: 2444249292046736431}
-  frontPassengerW: {fileID: 2444249292046736428}
-  rearDriverW: {fileID: 2444249292046736417}
-  rearPassengerW: {fileID: 2444249292046736430}
-  frontDriverT: {fileID: 1689069706889587759}
-  frontPassengerT: {fileID: 1689069706889587753}
-  rearDriverT: {fileID: 1689069706889587755}
-  rearPassengerT: {fileID: 1689069706889587765}
-  maxSteerAngle: 30
-  motorForce: 5000
+  frontLeftWheel: {fileID: 2444249292046736431}
+  frontRightWheel: {fileID: 2444249292046736428}
+  rearLeftWheel: {fileID: 2444249292046736417}
+  rearRightWheel: {fileID: 2444249292046736430}
+  frontLeftTransform: {fileID: 1689069706889587759}
+  frontRightTtransform: {fileID: 1689069706889587753}
+  rearLeftTransform: {fileID: 1689069706889587755}
+  rearRightTransform: {fileID: 1689069706889587765}
+  steerAngle: 40
+  motorForce: 50
 --- !u!1 &1689069707171133595
 GameObject:
   m_ObjectHideFlags: 0
