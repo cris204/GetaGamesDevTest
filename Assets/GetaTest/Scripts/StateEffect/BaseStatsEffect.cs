@@ -22,6 +22,19 @@ public class BaseStatsEffect : MonoBehaviour
     }
 
 
+    public void Activate(CarController kart) {
+        boostStats.ElapsedTime = 0;
+        if (kart) {
+            lastActivatedTimestamp = Time.time;
+            kart.AddPowerup(this.boostStats);
+            isCoolingDown = true;
+        }
+
+        if (needToDissapear) {
+            PoolManager.Instance.ReleaseObject(string.Format(Env.GENRIC_GAMEOBJECT_PATH, this.name), this.gameObject);
+        }
+    }
+
     private void Update()
     {
         if (isCoolingDown) {
@@ -31,21 +44,14 @@ public class BaseStatsEffect : MonoBehaviour
         }
     }
 
-
     public virtual void OnTriggerEnter(Collider other)
     {
         if (isCoolingDown) return;
 
         Rigidbody rb = other.attachedRigidbody;
         if (rb) {
-
             CarController kart = rb.GetComponent<CarController>();
-
-            if (kart) {
-                lastActivatedTimestamp = Time.time;
-                kart.AddPowerup(this.boostStats);
-                isCoolingDown = true;
-            }
+            Activate(kart);
         }
 
         if (needToDissapear) {

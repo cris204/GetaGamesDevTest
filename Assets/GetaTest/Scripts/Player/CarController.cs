@@ -129,6 +129,8 @@ public class CarController : MonoBehaviour
     [Tooltip("Which layers the wheels will detect.")]
     public LayerMask GroundLayers = Physics.DefaultRaycastLayers;
 
+    public bool wasInAir = false;
+
     const float k_NullInput = 0.01f;
     const float k_NullSpeed = 0.01f;
     Vector3 m_VerticalReference = Vector3.up;
@@ -142,14 +144,17 @@ public class CarController : MonoBehaviour
 
     // can the kart move?
     bool m_CanMove = true;
-    List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
+    public List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
     [SerializeField] CarController.Stats m_FinalStats;
 
     Quaternion m_LastValidRotation;
     Vector3 m_LastValidPosition;
     Vector3 m_LastCollisionNormal;
     bool m_HasCollision;
-    bool m_InAir = false;
+    
+    private bool m_InAir = false;
+    private BaseStatsEffect airAccelPowerUp;
+
 
     public void AddPowerup(StatPowerup statPowerup) => m_ActivePowerupList.Add(statPowerup);
     public void SetCanMove(bool move) => m_CanMove = move;
@@ -168,6 +173,7 @@ public class CarController : MonoBehaviour
     void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        airAccelPowerUp = GetComponent<BaseStatsEffect>();
 
         UpdateSuspensionParams(FrontLeftWheel);
         UpdateSuspensionParams(FrontRightWheel);
@@ -176,6 +182,14 @@ public class CarController : MonoBehaviour
 
         m_CurrentGrip = baseStats.Grip;
 
+    }
+
+    private void Update()
+    {
+        if (wasInAir && !m_InAir) {
+            wasInAir = false;
+            airAccelPowerUp.Activate(this);
+        }
     }
 
     void FixedUpdate()
@@ -249,7 +263,8 @@ public class CarController : MonoBehaviour
     {
         // while in the air, fall faster
         if (AirPercent >= 1) {
-            Rigidbody.velocity += Physics.gravity * Time.fixedDeltaTime * m_FinalStats.AddedGravity;
+
+            wasInAir = true;
         }
     }
 
