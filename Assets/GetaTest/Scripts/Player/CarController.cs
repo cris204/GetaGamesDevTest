@@ -475,7 +475,7 @@ public class CarController : MonoBehaviour
 
         }
 
-        if (other.tag == "FinishLine") {
+        if (other.tag == "FinishLine" && GameManager.Instance.CurrentGameState != GameState.Winner) {
             EventManager.Instance.TriggerEvent(new OnChangeGameStateEvent
             {
                 gameState = GameState.Winner

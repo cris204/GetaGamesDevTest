@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 8772576303312334995}
   - component: {fileID: 2919878059997106457}
   m_Layer: 0
-  m_Name: barricade
+  m_Name: Barricade
   m_TagString: Barricade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,18 +244,19 @@ MonoBehaviour:
   boostStats:
     modifiers:
       TopSpeed: 0.001
-      Acceleration: -6
-      ReverseSpeed: 0
+      Acceleration: 0
+      ReverseSpeed: 2
       ReverseAcceleration: 0
-      AccelerationCurve: 0
+      AccelerationCurve: 0.5
       Braking: 0
       CoastingDrag: 0
       Grip: 0
-      Steer: 0
-      AddedGravity: -5
+      Steer: 25
+      AddedGravity: 0
     PowerUpID: Barricade
     ElapsedTime: 0
-    MaxTime: 5
+    MaxTime: 2
+  needToDissapear: 1
   cooldown: 0
 --- !u!1 &5726076844041671166
 GameObject:
