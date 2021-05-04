@@ -12,8 +12,9 @@ public static class Env
 
     ////// Path
 
-    public const string HOURGLASS_GAMEOBJECT_PATH = "Prefabs/Hourglass";
-    public const string GENRIC_GAMEOBJECT_PATH = "Prefabs/{0}";
+    public const string HOURGLASS_GAMEOBJECT_PATH = "Prefabs/Objects/Hourglass";
+    public const string GENRIC_GAMEOBJECT_PATH = "Prefabs/Objects/{0}";
+    public const string GENRIC_VFX_GAMEOBJECT_PATH = "Prefabs/VFX/{0}";
 
 
     //KEY

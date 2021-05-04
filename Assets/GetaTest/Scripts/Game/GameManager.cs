@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public float bestLap = float.MaxValue;
 
     public Collider finalLine;
+    public GameObject confettiMidLine;
 
     [SerializeField]
     private GameState currentGameState;
@@ -122,6 +123,7 @@ public class GameManager : MonoBehaviour
     }
     private void OnDetectMidLine(OnDetectMidLineEvent e)
     {
+        confettiMidLine.SetActive(true);
         finalLine.enabled = true;
     }
 

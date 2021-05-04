@@ -199,6 +199,9 @@ public class CarController : MonoBehaviour
         if (wasInAir && !m_InAir) {
             wasInAir = false;
             airAccelPowerUp.Activate(this);
+
+            GameObject dust = PoolManager.Instance.GetObject(string.Format(Env.GENRIC_VFX_GAMEOBJECT_PATH, "JumpDustVFX"));
+            dust.transform.position = this.transform.position;
         }
     }
 
