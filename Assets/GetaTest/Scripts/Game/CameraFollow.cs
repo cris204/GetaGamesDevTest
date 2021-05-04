@@ -12,6 +12,13 @@ public class CameraFollow : MonoBehaviour {
 	private Vector3 lookDirection;
 	private Quaternion rot;
 	private Vector3 targetPos;
+
+	private void FixedUpdate()
+	{
+		LookAtTarget();
+		MoveToTarget();
+	}
+
 	public void LookAtTarget()
 	{
 		lookDirection = objectToFollow.position - transform.position;
@@ -28,12 +35,5 @@ public class CameraFollow : MonoBehaviour {
 
 		transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
 	}
-
-	private void FixedUpdate()
-	{
-		LookAtTarget();
-		MoveToTarget();
-	}
-
 
 }
