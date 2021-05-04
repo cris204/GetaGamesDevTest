@@ -8,4 +8,8 @@ public static class Env
     public static string CurrentScene = "";
     public static string NextScene = "";
 
+    ////// Path
+
+    public const string HOURGLASS_GAMEOBJECT_PATH = "Prefabs/Hourglass";
+
 }

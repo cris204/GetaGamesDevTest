@@ -466,6 +466,12 @@ public class CarController : MonoBehaviour
                 gameState = GameState.Winner
             });
         }
+
+        if (other.tag == "Hourglass") {
+            EventManager.Instance.TriggerEvent(new OnDetectHourglassEvent());
+            PoolManager.Instance.ReleaseObject(Env.HOURGLASS_GAMEOBJECT_PATH, other.gameObject);
+
+        }
     }
 }
     

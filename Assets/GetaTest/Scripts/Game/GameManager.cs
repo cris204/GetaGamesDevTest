@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     private GameState currentGameState;
 
     [Header("Timer")]
-    private float lapTime = 300;
+    private float lapTime = 20;
 
     public float LapTime { get => lapTime; set => lapTime = value; }
     public GameState CurrentGameState { get => currentGameState; set => currentGameState = value; }
@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     {
         EventManager.Instance.AddListener<OnChangeGameStateEvent>(this.OnChangeGameState);
         EventManager.Instance.AddListener<OnDetectMidLineEvent>(this.OnDetectMidLine);
+        EventManager.Instance.AddListener<OnDetectHourglassEvent>(this.OnDetectHourglass);
         currentGameState = GameState.Playing;
     }
 
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
         if (EventManager.HasInstance()){
             EventManager.Instance.RemoveListener<OnChangeGameStateEvent>(this.OnChangeGameState);
             EventManager.Instance.RemoveListener<OnDetectMidLineEvent>(this.OnDetectMidLine);
+            EventManager.Instance.RemoveListener<OnDetectHourglassEvent>(this.OnDetectHourglass);
         }
     }
 
@@ -84,6 +86,14 @@ public class GameManager : MonoBehaviour
     {
         finalLine.enabled = true;
     }
+
+
+    private void OnDetectHourglass(OnDetectHourglassEvent e)
+    {
+        lapTime += 10f;
+    }
+
+
     #endregion
 
 }
