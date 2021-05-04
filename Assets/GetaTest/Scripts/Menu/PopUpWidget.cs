@@ -16,9 +16,9 @@ public class PopUpWidget : MonoBehaviour
 
     public void Open()
     {
-        this.onOpen?.Invoke();
-        this.gameObject.SetActive(true);
-        this.container.SetActive(true);
+        onOpen?.Invoke();
+        gameObject.SetActive(true);
+        container.SetActive(true);
         container.transform.localScale = Vector3.zero;
 
         iTween.ScaleTo(container, iTween.Hash("scale", Vector3.one,
@@ -34,9 +34,9 @@ public class PopUpWidget : MonoBehaviour
 
     private void OnCompleteClose()
     {
-        this.onClose?.Invoke();
-        this.container.SetActive(false);
-        this.gameObject.SetActive(false);
+        onClose?.Invoke();
+        container.SetActive(false);
+        gameObject.SetActive(false);
     }
 
 }

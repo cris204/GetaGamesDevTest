@@ -13,16 +13,16 @@ public class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerUp
 
     private void Awake()
     {
-        if (this.targetTransform != null) {
-            this.targetTransform = GetComponent<RectTransform>();
+        if (targetTransform != null) {
+            targetTransform = GetComponent<RectTransform>();
         }
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
 
-        if (!this.isScaleSetup) {
-            initScale = (this.targetTransform != null ? this.targetTransform : this.transform).localScale;
-            this.isScaleSetup = true;
+        if (!isScaleSetup) {
+            initScale = (targetTransform != null ? targetTransform : transform).localScale;
+            isScaleSetup = true;
         }
         if (!this.disableScale) {
 
@@ -38,7 +38,7 @@ public class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerUp
     {
 
         isClicked = false;
-        if (!this.disableScale) {
+        if (!disableScale) {
             if (targetTransform != null) {
                 iTween.ScaleTo(targetTransform.gameObject, initScale, 0.2f);
             }
@@ -48,7 +48,7 @@ public class ButtonInteraction : MonoBehaviour, IPointerEnterHandler, IPointerUp
     public void OnPointerDown(PointerEventData eventData)
     {
         isClicked = true;
-        if (!this.disableScale) {
+        if (!disableScale) {
             if (targetTransform != null) {
                 iTween.ScaleTo(targetTransform.gameObject, initScale * 0.9f, 0.2f);
             }
