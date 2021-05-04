@@ -139,6 +139,10 @@ public class CarController : MonoBehaviour
     [Header("Animator")]
     public Animator playerAnim;
 
+    [Header("Sounds")]
+    public AudioSource idleAudioSource;
+    public AudioSource runAudioSource;
+
     public bool wasInAir = false;
 
     const float k_NullInput = 0.01f;
@@ -191,7 +195,7 @@ public class CarController : MonoBehaviour
         UpdateSuspensionParams(RearRightWheel);
 
         m_CurrentGrip = baseStats.Grip;
-
+        UpdateSounds(0);
     }
 
     private void Update()
@@ -352,6 +356,8 @@ public class CarController : MonoBehaviour
         // apply inputs to forward/backward
         float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
         float steerAngle = turningPower * 5;
+
+        UpdateSounds(accelInput);
 
         playerAnim.SetFloat("Direction", steerAngle);
 
@@ -534,9 +540,18 @@ public class CarController : MonoBehaviour
 
         wheel.GetWorldPose(out _pos, out _quat);
 
-      //  _transform.position = _pos;
         transform.rotation = _quat;
+    }
 
+    private void UpdateSounds(float accel)
+    {
+        if (accel > 0.2f) {
+            iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0, "time", 0.2f));
+            iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0.25f, "time", 0.2f));
+        } else {
+            iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0.5f, "time", 0.2f));
+            iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0, "time", 0.2f));
+        }
     }
 }
     
