@@ -143,7 +143,7 @@ public class CarController : MonoBehaviour
     // can the kart move?
     bool m_CanMove = true;
     List<StatPowerup> m_ActivePowerupList = new List<StatPowerup>();
-    CarController.Stats m_FinalStats;
+    [SerializeField] CarController.Stats m_FinalStats;
 
     Quaternion m_LastValidRotation;
     Vector3 m_LastValidPosition;
@@ -472,6 +472,7 @@ public class CarController : MonoBehaviour
             PoolManager.Instance.ReleaseObject(Env.HOURGLASS_GAMEOBJECT_PATH, other.gameObject);
 
         }
+
     }
 }
     

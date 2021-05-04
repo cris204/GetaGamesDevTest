@@ -9,6 +9,7 @@ TagManager:
   - MidLap
   - MidLine
   - Hourglass
+  - Turbo
   layers:
   - Default
   - TransparentFX
