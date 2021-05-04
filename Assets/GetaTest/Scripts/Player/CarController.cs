@@ -211,7 +211,7 @@ public class CarController : MonoBehaviour
 
         // apply vehicle physics
         if (m_CanMove) {
-            MoveVehicle(Input.GetButton("Vertical"), Input.GetButton("Jump"), Input.GetAxis("Horizontal"));
+            MoveVehicle(Input.GetButton("Accel"), Input.GetButton("Brake"), Input.GetAxis("Horizontal"));
         }
         GroundAirbourne();
 
@@ -470,6 +470,15 @@ public class CarController : MonoBehaviour
         if (other.tag == "Hourglass") {
             EventManager.Instance.TriggerEvent(new OnDetectHourglassEvent());
             PoolManager.Instance.ReleaseObject(Env.HOURGLASS_GAMEOBJECT_PATH, other.gameObject);
+
+        }
+
+        if (other.tag == "Barricade") {
+            int random = UnityEngine.Random.Range(-1, 2);
+            if(random == 0) {
+                random = -1;
+            }
+            MoveVehicle(true, false, random * 50);
 
         }
 

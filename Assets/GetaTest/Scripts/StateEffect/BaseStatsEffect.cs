@@ -1,14 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class Turbo : MonoBehaviour
+public class BaseStatsEffect : MonoBehaviour
 {
-
     public CarController.StatPowerup boostStats = new CarController.StatPowerup
     {
-        PowerUpID = "Turbo",
         MaxTime = 5
     };
+
+    public bool needToDissapear;
 
     public bool isCoolingDown { get; private set; }
     public float lastActivatedTimestamp { get; private set; }
@@ -24,23 +25,21 @@ public class Turbo : MonoBehaviour
     private void Update()
     {
         if (isCoolingDown) {
-
             if (Time.time - lastActivatedTimestamp > cooldown) {
                 isCoolingDown = false;
             }
-
         }
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         if (isCoolingDown) return;
 
-        var rb = other.attachedRigidbody;
+        Rigidbody rb = other.attachedRigidbody;
         if (rb) {
 
-            var kart = rb.GetComponent<CarController>();
+            CarController kart = rb.GetComponent<CarController>();
 
             if (kart) {
                 lastActivatedTimestamp = Time.time;
@@ -48,6 +47,10 @@ public class Turbo : MonoBehaviour
                 isCoolingDown = true;
             }
         }
-    }
 
+        if (needToDissapear) {
+            PoolManager.Instance.ReleaseObject(string.Format(Env.GENRIC_GAMEOBJECT_PATH, this.name),this.gameObject);
+        }
+
+    }
 }

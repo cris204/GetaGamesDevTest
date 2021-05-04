@@ -11,5 +11,6 @@ public static class Env
     ////// Path
 
     public const string HOURGLASS_GAMEOBJECT_PATH = "Prefabs/Hourglass";
+    public const string GENRIC_GAMEOBJECT_PATH = "Prefabs/{0}";
 
 }

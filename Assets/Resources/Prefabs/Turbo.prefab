@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6382557128870456020}
   - component: {fileID: 1601451390198143973}
   - component: {fileID: 694962171}
-  - component: {fileID: 694962172}
+  - component: {fileID: 1035065081}
   m_Layer: 0
   m_Name: Turbo
   m_TagString: Turbo
@@ -114,7 +114,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &694962172
+--- !u!114 &1035065081
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,13 +123,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6301415568227549920}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b43b3ddc62d770047a16611adcda3fcb, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d28697815d83bc4aafc4e207362321b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boostStats:
     modifiers:
-      TopSpeed: 50
-      Acceleration: 0
+      TopSpeed: 15
+      Acceleration: 5
       ReverseSpeed: 0
       ReverseAcceleration: 0
       AccelerationCurve: 0
@@ -141,5 +141,5 @@ MonoBehaviour:
     PowerUpID: Turbo
     ElapsedTime: 0
     MaxTime: 5
-  cooldown: 2
-  disableGameObjectWhenActivated: 0
+  needToDissapear: 0
+  cooldown: 0
