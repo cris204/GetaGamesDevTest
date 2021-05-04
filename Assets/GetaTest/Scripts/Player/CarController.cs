@@ -454,7 +454,13 @@ public class CarController : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "FinishLine") {
+        if (other.tag == "MidLine") {
+
+            EventManager.Instance.TriggerEvent(new OnDetectMidLineEvent());
+
+        }
+
+        if (other.tag == "FinishLine") {
             EventManager.Instance.TriggerEvent(new OnChangeGameStateEvent
             {
                 gameState = GameState.Winner

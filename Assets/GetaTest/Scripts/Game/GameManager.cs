@@ -23,11 +23,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Collider finalLine;
+
     [SerializeField]
     private GameState currentGameState;
 
     [Header("Timer")]
-    private float lapTime = 3;
+    private float lapTime = 300;
 
     public float LapTime { get => lapTime; set => lapTime = value; }
     public GameState CurrentGameState { get => currentGameState; set => currentGameState = value; }
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         EventManager.Instance.AddListener<OnChangeGameStateEvent>(this.OnChangeGameState);
+        EventManager.Instance.AddListener<OnDetectMidLineEvent>(this.OnDetectMidLine);
         currentGameState = GameState.Playing;
     }
 
@@ -51,6 +54,7 @@ public class GameManager : MonoBehaviour
     {
         if (EventManager.HasInstance()){
             EventManager.Instance.RemoveListener<OnChangeGameStateEvent>(this.OnChangeGameState);
+            EventManager.Instance.RemoveListener<OnDetectMidLineEvent>(this.OnDetectMidLine);
         }
     }
 
@@ -76,7 +80,10 @@ public class GameManager : MonoBehaviour
     {
         currentGameState = e.gameState;
     }
-
+    private void OnDetectMidLine(OnDetectMidLineEvent e)
+    {
+        finalLine.enabled = true;
+    }
     #endregion
 
 }
