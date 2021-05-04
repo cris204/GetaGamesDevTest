@@ -136,6 +136,9 @@ public class CarController : MonoBehaviour
     [Tooltip("Which layers the wheels will detect.")]
     public LayerMask GroundLayers = Physics.DefaultRaycastLayers;
 
+    [Header("Animator")]
+    public Animator playerAnim;
+
     public bool wasInAir = false;
 
     const float k_NullInput = 0.01f;
@@ -346,6 +349,8 @@ public class CarController : MonoBehaviour
         // apply inputs to forward/backward
         float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
         float steerAngle = turningPower * 5;
+
+        playerAnim.SetFloat("Direction", steerAngle);
 
 
         FrontLeftWheel.steerAngle = steerAngle;
