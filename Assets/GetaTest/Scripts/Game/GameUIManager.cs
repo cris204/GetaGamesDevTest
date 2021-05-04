@@ -32,17 +32,11 @@ public class GameUIManager : MonoBehaviour
     private void Update()
     {
         if (GameManager.Instance.CurrentGameState == GameState.Playing) {
-            timer.text = SecondsToMinutes(GameManager.Instance.LapTime);
+            timer.text = Env.SecondsToMinutes(GameManager.Instance.LapTime);
         }
     }
 
-    private string SecondsToMinutes(float currentTime)
-    {
-        minutes = Mathf.Floor(currentTime / 60);
-        seconds = currentTime % 60;
 
-        return  minutes + ":" + Mathf.RoundToInt(seconds);
-    }
 
     private void ShowEndGameScreen(bool playerWin)
     {
@@ -54,7 +48,16 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
-#region Events
+    #region Buttons
+    // Called by button in scene
+    public void BackToMenu()
+    {
+        GameManager.Instance.SaveInformation();
+        LoadingSceneManager.Instance.LoadScene(Env.LOADING_SCENE);
+    }
+    #endregion
+
+    #region Events
 
     private void OnChangeGameState(OnChangeGameStateEvent e)
     {
