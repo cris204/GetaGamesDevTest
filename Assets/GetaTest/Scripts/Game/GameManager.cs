@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.AddListener<OnChangeGameStateEvent>(this.OnChangeGameState);
         EventManager.Instance.AddListener<OnDetectMidLineEvent>(this.OnDetectMidLine);
         EventManager.Instance.AddListener<OnDetectHourglassEvent>(this.OnDetectHourglass);
-        currentGameState = GameState.Playing;
         Env.CurrentScene = Env.GAME_SCENE;
         LoadInformation();
         BackgroundMusic.Instance.SetAudioClip("GamePlay",0.3f);
