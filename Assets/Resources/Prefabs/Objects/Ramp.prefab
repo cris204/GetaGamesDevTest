@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5414381969130905265}
   - component: {fileID: 8974658261518962964}
   - component: {fileID: 6586676540389205470}
+  - component: {fileID: 7038720577097398400}
   m_Layer: 0
   m_Name: Ramp
   m_TagString: Untagged
@@ -25,9 +26,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4641081574654444555}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.12, y: 0.425, z: 10.06}
-  m_LocalScale: {x: 83.44247, y: 54.037476, z: 86.30809}
+  m_LocalScale: {x: 83.44247, y: 70.87092, z: 117.57623}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -81,3 +82,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7038720577097398400
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4641081574654444555}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6954448008607686709, guid: ac973a5271dff00408a97afc9de0f2e9, type: 3}

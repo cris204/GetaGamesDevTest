@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     private GameState currentGameState;
 
     [Header("Timer")]
-    private float lapTime = 50;
+    private float lapTime = 30;
     private float currentLapTime;
 
     public float LapTime { get => lapTime; set => lapTime = value; }
