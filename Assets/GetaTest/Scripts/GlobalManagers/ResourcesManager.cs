@@ -29,5 +29,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
     {
         return Resources.Load<Texture2D>(path);
     }
-
+    public AudioClip GetAudioClip(string path)
+    {
+        return Resources.Load<AudioClip>(path);
+    }
 }

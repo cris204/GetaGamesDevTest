@@ -198,6 +198,20 @@ public class CarController : MonoBehaviour
         UpdateSounds(0);
     }
 
+    private void Start()
+    {
+        EventManager.Instance.AddListener<OnChangeGameStateEvent>(this.OnChangeGameState);
+    }
+
+
+
+    private void OnDestroy()
+    {
+        if (EventManager.HasInstance()) {
+            EventManager.Instance.RemoveListener<OnChangeGameStateEvent>(this.OnChangeGameState);
+        }
+    }
+
     private void Update()
     {
         if (wasInAir && !m_InAir) {
@@ -516,15 +530,17 @@ public class CarController : MonoBehaviour
             {
                 gameState = GameState.Winner
             });
+         
         }
 
         if (other.tag == "Hourglass") {
             EventManager.Instance.TriggerEvent(new OnDetectHourglassEvent());
             PoolManager.Instance.ReleaseObject(Env.HOURGLASS_GAMEOBJECT_PATH, other.gameObject);
-
+            Env.ThrowAudio("GetHourglass", 0.5f);
         }
 
         if (other.tag == "Barricade") {
+            Env.ThrowAudio("Crash", 0.5f);
             int random = UnityEngine.Random.Range(-1, 2);
             if(random == 0) {
                 random = -1;
@@ -543,16 +559,31 @@ public class CarController : MonoBehaviour
         transform.rotation = _quat;
     }
 
-    private void UpdateSounds(float accel)
+    private void UpdateSounds(float accel, bool disableSound = false)
     {
-        if (accel > 0.2f) {
-            iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0, "time", 0.2f));
-            iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0.25f, "time", 0.2f));
+        if (!disableSound) {
+            if (accel > 0.2f) {
+                iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0, "time", 0.2f));
+                iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0.15f, "time", 0.2f));
+            } else {
+                iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0.35f, "time", 0.2f));
+                iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0, "time", 0.2f));
+            }
         } else {
-            iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0.5f, "time", 0.2f));
+            iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0, "time", 0.2f));
             iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0, "time", 0.2f));
         }
     }
+
+    #region Events
+    private void OnChangeGameState(OnChangeGameStateEvent e)
+    {
+        if (e.gameState != GameState.Playing) {
+            UpdateSounds(0,true);
+        }
+    }
+    #endregion
+
 }
-    
+
 

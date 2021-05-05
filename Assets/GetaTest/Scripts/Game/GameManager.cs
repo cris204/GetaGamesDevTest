@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public int racingPlayed;
     public int racingWins;
     public float bestLap = float.MaxValue;
+    private bool needToSaveBestLap;
 
     public Collider finalLine;
     public GameObject confettiMidLine;
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
     private GameState currentGameState;
 
     [Header("Timer")]
-    private float lapTime = 20000;
+    private float lapTime = 1;
     private float currentLapTime;
 
     public float LapTime { get => lapTime; set => lapTime = value; }
@@ -91,7 +92,9 @@ public class GameManager : MonoBehaviour
     {
         StorageManager.Instance.SetInt(Env.RACING_TIMES_KEY, racingPlayed);
         StorageManager.Instance.SetInt(Env.WIN_TIMES_KEY, racingWins);
-        StorageManager.Instance.SetFloat(Env.BEST_LAP_TIME_KEY, currentLapTime);
+        if (needToSaveBestLap) {
+            StorageManager.Instance.SetFloat(Env.BEST_LAP_TIME_KEY, bestLap);
+        }
     }
 
     private void LoadInformation()
@@ -111,21 +114,32 @@ public class GameManager : MonoBehaviour
         currentGameState = e.gameState;
         if(currentGameState == GameState.TimeOut) {
             racingPlayed++;
+
+            Env.ThrowAudio("Lose", 0.5f);
         }
 
         if(currentGameState == GameState.Winner) {
             racingPlayed++;
             racingWins++;
-            if(currentLapTime <= bestLap) {
+
+            Env.ThrowAudio("Win", 0.5f);
+
+            if (currentLapTime <= bestLap) {
+                needToSaveBestLap = true;
                 bestLap = currentLapTime;
             }
         }
     }
     private void OnDetectMidLine(OnDetectMidLineEvent e)
     {
-        confettiMidLine.SetActive(true);
-        finalLine.enabled = true;
+        if (!confettiMidLine.activeInHierarchy) {
+            confettiMidLine.SetActive(true);
+            finalLine.enabled = true;
+
+            Env.ThrowAudio("CheckPoint", 0.5f);
+        }
     }
+
 
 
     private void OnDetectHourglass(OnDetectHourglassEvent e)
