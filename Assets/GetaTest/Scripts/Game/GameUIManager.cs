@@ -25,6 +25,7 @@ public class GameUIManager : MonoBehaviour
     private void Start()
     {
         EventManager.Instance.AddListener<OnChangeGameStateEvent>(this.OnChangeGameState);
+        timer.text = Env.SecondsToMinutes(GameManager.Instance.LapTime);
     }
 
     private void OnDestroy()
