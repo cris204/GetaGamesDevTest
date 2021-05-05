@@ -36,8 +36,6 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
-
-
     private void ShowEndGameScreen(bool playerWin)
     {
         endGameScreen.SetActive(true);

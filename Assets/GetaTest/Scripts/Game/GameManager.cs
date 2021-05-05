@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     private GameState currentGameState;
 
     [Header("Timer")]
-    private float lapTime = 1;
+    private float lapTime = 50;
     private float currentLapTime;
 
     public float LapTime { get => lapTime; set => lapTime = value; }
@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
         currentGameState = GameState.Playing;
         Env.CurrentScene = Env.GAME_SCENE;
         LoadInformation();
+        BackgroundMusic.Instance.SetAudioClip("GamePlay",0.3f);
     }
 
     private void OnDestroy()

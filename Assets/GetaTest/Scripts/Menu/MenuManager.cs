@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
         Env.CurrentScene = Env.MENU_SCENE;
         Env.NextScene = Env.LOADING_SCENE;
         LoadInformation();
+        BackgroundMusic.Instance.SetAudioClip("Menu", 0.3f);
     }
 
 
