@@ -165,7 +165,7 @@ public class CarController : MonoBehaviour
     Vector3 m_LastValidPosition;
     Vector3 m_LastCollisionNormal;
     bool m_HasCollision;
-    
+
     private bool m_InAir = false;
     private BaseStatsEffect airAccelPowerUp;
 
@@ -324,7 +324,13 @@ public class CarController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision) => m_HasCollision = true;
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Out") {
+            transform.position = GameManager.Instance.currentCheckpoint.position;
+        }
+        m_HasCollision = true;
+    }
     void OnCollisionExit(Collision collision) => m_HasCollision = false;
 
     void OnCollisionStay(Collision collision)

@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
 
     public Collider finalLine;
     public GameObject confettiMidLine;
+    public GameObject startLine;
+    public GameObject midLine;
+    public Transform currentCheckpoint;
 
     [SerializeField]
     private GameState currentGameState;
@@ -59,6 +62,7 @@ public class GameManager : MonoBehaviour
         Env.CurrentScene = Env.GAME_SCENE;
         LoadInformation();
         BackgroundMusic.Instance.SetAudioClip("GamePlay",0.3f);
+        currentCheckpoint = startLine.transform;
     }
 
     private void OnDestroy()
@@ -135,7 +139,7 @@ public class GameManager : MonoBehaviour
         if (!confettiMidLine.activeInHierarchy) {
             confettiMidLine.SetActive(true);
             finalLine.enabled = true;
-
+            currentCheckpoint = midLine.transform;
             Env.ThrowAudio("CheckPoint", 0.5f);
         }
     }
