@@ -1,6 +1,12 @@
 # GetaGamesDevTest
 Unity game dev
 
+Movement
+
+W, upArrow Accel
+S, downArrow, space  Break/reverse
+left Arrow, right Arrow = Turn
+
 
 External
 
