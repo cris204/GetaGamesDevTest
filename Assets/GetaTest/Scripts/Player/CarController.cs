@@ -136,6 +136,13 @@ public class CarController : MonoBehaviour
     [Tooltip("Which layers the wheels will detect.")]
     public LayerMask GroundLayers = Physics.DefaultRaycastLayers;
 
+    [Header("Animator")]
+    public Animator playerAnim;
+
+    [Header("Sounds")]
+    public AudioSource idleAudioSource;
+    public AudioSource runAudioSource;
+
     public bool wasInAir = false;
 
     const float k_NullInput = 0.01f;
@@ -188,7 +195,21 @@ public class CarController : MonoBehaviour
         UpdateSuspensionParams(RearRightWheel);
 
         m_CurrentGrip = baseStats.Grip;
+        UpdateSounds(0);
+    }
 
+    private void Start()
+    {
+        EventManager.Instance.AddListener<OnChangeGameStateEvent>(this.OnChangeGameState);
+    }
+
+
+
+    private void OnDestroy()
+    {
+        if (EventManager.HasInstance()) {
+            EventManager.Instance.RemoveListener<OnChangeGameStateEvent>(this.OnChangeGameState);
+        }
     }
 
     private void Update()
@@ -196,6 +217,9 @@ public class CarController : MonoBehaviour
         if (wasInAir && !m_InAir) {
             wasInAir = false;
             airAccelPowerUp.Activate(this);
+
+            GameObject dust = PoolManager.Instance.GetObject(string.Format(Env.GENRIC_VFX_GAMEOBJECT_PATH, "JumpDustVFX"));
+            dust.transform.position = this.transform.position;
         }
     }
 
@@ -346,6 +370,10 @@ public class CarController : MonoBehaviour
         // apply inputs to forward/backward
         float turningPower = IsDrifting ? m_DriftTurningPower : turnInput * m_FinalStats.Steer;
         float steerAngle = turningPower * 5;
+
+        UpdateSounds(accelInput);
+
+        playerAnim.SetFloat("Direction", steerAngle);
 
 
         FrontLeftWheel.steerAngle = steerAngle;
@@ -502,15 +530,17 @@ public class CarController : MonoBehaviour
             {
                 gameState = GameState.Winner
             });
+         
         }
 
         if (other.tag == "Hourglass") {
             EventManager.Instance.TriggerEvent(new OnDetectHourglassEvent());
             PoolManager.Instance.ReleaseObject(Env.HOURGLASS_GAMEOBJECT_PATH, other.gameObject);
-
+            Env.ThrowAudio("GetHourglass", 0.5f);
         }
 
         if (other.tag == "Barricade") {
+            Env.ThrowAudio("Crash", 0.5f);
             int random = UnityEngine.Random.Range(-1, 2);
             if(random == 0) {
                 random = -1;
@@ -526,10 +556,34 @@ public class CarController : MonoBehaviour
 
         wheel.GetWorldPose(out _pos, out _quat);
 
-      //  _transform.position = _pos;
         transform.rotation = _quat;
-
     }
+
+    private void UpdateSounds(float accel, bool disableSound = false)
+    {
+        if (!disableSound) {
+            if (accel > 0.2f) {
+                iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0, "time", 0.2f));
+                iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0.15f, "time", 0.2f));
+            } else {
+                iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0.35f, "time", 0.2f));
+                iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0, "time", 0.2f));
+            }
+        } else {
+            iTween.AudioTo(idleAudioSource.gameObject, iTween.Hash("audiosource", idleAudioSource, "volume", 0, "time", 0.2f));
+            iTween.AudioTo(runAudioSource.gameObject, iTween.Hash("audiosource", runAudioSource, "volume", 0, "time", 0.2f));
+        }
+    }
+
+    #region Events
+    private void OnChangeGameState(OnChangeGameStateEvent e)
+    {
+        if (e.gameState != GameState.Playing) {
+            UpdateSounds(0,true);
+        }
+    }
+    #endregion
+
 }
-    
+
 

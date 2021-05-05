@@ -13,8 +13,14 @@ public class GameUIManager : MonoBehaviour
     private float seconds;
 
     [Header("EndGame screen")]
-    public TextMeshProUGUI tittle;
+    public TextMeshProUGUI endGameTittle;
     public GameObject endGameScreen;
+
+
+    [Header("Start screen")]
+    public TextMeshProUGUI startTittle;
+    public GameObject startScreen;
+    private float timeToStart = 3;
 
     private void Start()
     {
@@ -31,20 +37,46 @@ public class GameUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.CurrentGameState == GameState.Playing) {
+        if(GameManager.Instance.CurrentGameState == GameState.Waiting) {
+            
+            StartScreenCountDown();
+
+        }else if (GameManager.Instance.CurrentGameState == GameState.Playing) {
+            
             timer.text = Env.SecondsToMinutes(GameManager.Instance.LapTime);
+        
         }
     }
 
+    public void StartScreenCountDown()
+    {
+        if (timeToStart > 0 && timeToStart <= 1) {
+            timeToStart -= Time.deltaTime;
+            startTittle.text = "Go!";
 
+        } else if (timeToStart <= 0) {
+            startScreen.SetActive(false);
+            Env.ThrowAudio("CheckPoint", 0.5f);
+            EventManager.Instance.TriggerEvent(new OnChangeGameStateEvent
+            {
+                gameState = GameState.Playing
+            });
+
+        } else { 
+            timeToStart -= Time.deltaTime;
+            startTittle.text = timeToStart.ToString("F0");
+        }
+
+
+    }
 
     private void ShowEndGameScreen(bool playerWin)
     {
         endGameScreen.SetActive(true);
         if (playerWin) {
-            tittle.text = "Player wins";
+            endGameTittle.text = "Player wins";
         } else {
-            tittle.text = "Try again";
+            endGameTittle.text = "Try again";
         }
     }
 
@@ -61,9 +93,9 @@ public class GameUIManager : MonoBehaviour
 
     private void OnChangeGameState(OnChangeGameStateEvent e)
     {
-       if(e.gameState == GameState.Winner) {
+         if (e.gameState == GameState.Winner) {
             ShowEndGameScreen(true);
-       }else if(e.gameState == GameState.TimeOut) {
+        } else if (e.gameState == GameState.TimeOut) {
             ShowEndGameScreen(false);
         }
     }

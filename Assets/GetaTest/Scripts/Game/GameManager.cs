@@ -27,14 +27,16 @@ public class GameManager : MonoBehaviour
     public int racingPlayed;
     public int racingWins;
     public float bestLap = float.MaxValue;
+    private bool needToSaveBestLap;
 
     public Collider finalLine;
+    public GameObject confettiMidLine;
 
     [SerializeField]
     private GameState currentGameState;
 
     [Header("Timer")]
-    private float lapTime = 20000;
+    private float lapTime = 50;
     private float currentLapTime;
 
     public float LapTime { get => lapTime; set => lapTime = value; }
@@ -54,9 +56,9 @@ public class GameManager : MonoBehaviour
         EventManager.Instance.AddListener<OnChangeGameStateEvent>(this.OnChangeGameState);
         EventManager.Instance.AddListener<OnDetectMidLineEvent>(this.OnDetectMidLine);
         EventManager.Instance.AddListener<OnDetectHourglassEvent>(this.OnDetectHourglass);
-        currentGameState = GameState.Playing;
         Env.CurrentScene = Env.GAME_SCENE;
         LoadInformation();
+        BackgroundMusic.Instance.SetAudioClip("GamePlay",0.3f);
     }
 
     private void OnDestroy()
@@ -90,7 +92,9 @@ public class GameManager : MonoBehaviour
     {
         StorageManager.Instance.SetInt(Env.RACING_TIMES_KEY, racingPlayed);
         StorageManager.Instance.SetInt(Env.WIN_TIMES_KEY, racingWins);
-        StorageManager.Instance.SetFloat(Env.BEST_LAP_TIME_KEY, currentLapTime);
+        if (needToSaveBestLap) {
+            StorageManager.Instance.SetFloat(Env.BEST_LAP_TIME_KEY, bestLap);
+        }
     }
 
     private void LoadInformation()
@@ -110,20 +114,32 @@ public class GameManager : MonoBehaviour
         currentGameState = e.gameState;
         if(currentGameState == GameState.TimeOut) {
             racingPlayed++;
+
+            Env.ThrowAudio("Lose", 0.5f);
         }
 
         if(currentGameState == GameState.Winner) {
             racingPlayed++;
             racingWins++;
-            if(currentLapTime <= bestLap) {
+
+            Env.ThrowAudio("Win", 0.5f);
+
+            if (currentLapTime <= bestLap) {
+                needToSaveBestLap = true;
                 bestLap = currentLapTime;
             }
         }
     }
     private void OnDetectMidLine(OnDetectMidLineEvent e)
     {
-        finalLine.enabled = true;
+        if (!confettiMidLine.activeInHierarchy) {
+            confettiMidLine.SetActive(true);
+            finalLine.enabled = true;
+
+            Env.ThrowAudio("CheckPoint", 0.5f);
+        }
     }
+
 
 
     private void OnDetectHourglass(OnDetectHourglassEvent e)

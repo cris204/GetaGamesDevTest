@@ -20,7 +20,7 @@ public class LoadingSceneManager : Singleton<LoadingSceneManager>
 
         while (!loadSceneOperation.isDone) {
             if (loadSceneOperation.progress >= 0.9f) {
-                loadSceneOperation.allowSceneActivation = true;
+             //   loadSceneOperation.allowSceneActivation = true;
             }
             yield return null;
         }
